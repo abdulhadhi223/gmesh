@@ -55,7 +55,7 @@ specifiers:
   pinst: 2.1.6
   prettier: 2.7.1
   react: 17.0.2
-  react-ace: 9.5.0
+  react-ace: 10.1.0
   react-app-polyfill: 3.0.0
   react-bootstrap: 2.5.0
   react-css-theme-switcher: 0.3.0
@@ -136,7 +136,7 @@ devDependencies:
   pinst: 2.1.6
   prettier: 2.7.1
   react: 17.0.2
-  react-ace: 9.5.0_sfoxds7t5ydpegc3knd667wn6m
+  react-ace: 10.1.0_sfoxds7t5ydpegc3knd667wn6m
   react-app-polyfill: 3.0.0
   react-bootstrap: 2.5.0_hiunvzosbwliizyirxfy6hjyim
   react-css-theme-switcher: 0.3.0_react@17.0.2
@@ -4162,11 +4162,11 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-ace/9.5.0_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-4l5FgwGh6K7A0yWVMQlPIXDItM4Q9zzXRqOae8KkCl6MkOob7sC1CzHxZdOGvV+QioKWbX2p5HcdOVUv6cAdSg==}
+  /react-ace/10.1.0_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-VkvUjZNhdYTuKOKQpMIZi7uzZZVgzCjM7cLYu6F64V0mejY8a2XTyPUIMszC6A4trbeMIHbK5fYFcT/wkP/8VA==}
     peerDependencies:
-      react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0
-      react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0
+      react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0
     dependencies:
       ace-builds: 1.11.2
       diff-match-patch: 1.0.5
