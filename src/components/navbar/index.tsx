@@ -1,4 +1,4 @@
-import React, { FunctionComponent, RefObject, useRef, useState } from 'react';
+import React, { FunctionComponent, useRef, useState } from 'react';
 
 import { GlobalState } from '../../store';
 import actions, { ThemeActions } from '../../actions/actions';
@@ -6,14 +6,17 @@ import { connect } from 'unistore/react';
 import Button from '../button';
 import cx from "classnames";
 import { Link, NavLink } from 'react-router-dom';
-import useComponentVisible from '../../hooks/useComponentVisible';
-import { Device } from '../../types';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { BridgeApi } from '../../actions/BridgeApi';
 import { ThemeSwitcher } from '../theme-switcher';
-import { WithTranslation, withTranslation, useTranslation } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import LocalePicker from '../../i18n/LocalePicker';
-import { isIframe, toHHMMSS } from '../../utils';
+import { isIframe } from '../../utils';
+import { StartStopJoinButton } from './StartStopJoinButton';
+import logo from '../../images/gm.png';
+
+
+
 
 
 
@@ -42,66 +45,9 @@ const urls = [
     {
         href: '/ota',
         key: 'ota'
-    },
-    {
-        href: '/touchlink',
-        key: 'touchlink'
-    },
-    {
-        href: '/logs',
-        key: 'logs'
-    },
-    {
-        href: '/extensions',
-        key: 'extensions'
     }
 ];
-type StartStopJoinButtonProps = Pick<BridgeApi, 'setPermitJoin'> & Pick<GlobalState, 'bridgeInfo' | 'devices'>;
 
-const StartStopJoinButton: FunctionComponent<StartStopJoinButtonProps> = ({ devices, setPermitJoin, bridgeInfo }) => {
-
-    const { t } = useTranslation(['navbar']);
-    const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
-    const [selectedRouter, setSelectedRouter] = useState<Device>({} as Device);
-    const { permit_join: permitJoin, permit_join_timeout: permitJoinTimeout } = bridgeInfo;
-
-    const selectAndHide = (device: Device) => { setSelectedRouter(device); setIsComponentVisible(false) }
-    const routers = Object.values(devices)
-        .filter(d => d.type === 'Router')
-        .sort((a, b) => a.friendly_name.localeCompare(b.friendly_name))
-        .map(device => (<li key={device.friendly_name}>
-            <Button<Device> item={device}
-                className="dropdown-item"
-                onClick={selectAndHide}>{device.friendly_name}
-            </Button>
-        </li>));
-
-    const onBtnClick = () => {
-        setPermitJoin(!permitJoin, selectedRouter);
-    }
-    const permitJoinTimer = <>{permitJoinTimeout ? <div className="d-inline-block mx-1" style={{ width: '30px', maxWidth: '30px' }}>{toHHMMSS(permitJoinTimeout)}</div> : null}</>;
-    const buttonLabel = <>{permitJoin ? t("disable_join") : t("permit_join")} ({selectedRouter?.friendly_name ?? t("all")}){permitJoinTimer}</>;
-    return (
-        <div className="btn-group text-nowrap me-1">
-
-            <button onClick={onBtnClick}
-                type="button"
-                className="btn btn-outline-secondary">{buttonLabel}</button>
-
-
-            {routers.length ? (<><Button<boolean> type="button" onClick={setIsComponentVisible} item={!isComponentVisible} className="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split">
-                <span className="visually-hidden">{t('toggle_dropdown')}</span>
-            </Button>
-                <ul ref={ref as RefObject<HTMLUListElement>} className={cx('dropdown-menu', { show: isComponentVisible })}>
-                    <li key='all'>
-                        <Button className="dropdown-item" onClick={selectAndHide}>{t('all')}</Button>
-                    </li>
-                    {routers}
-                </ul></>) : null}
-
-        </div>
-    );
-}
 
 type PropsFromStore = Pick<GlobalState, 'devices' | 'bridgeInfo'>;
 
@@ -114,7 +60,10 @@ const NavBar: FunctionComponent<PropsFromStore & ThemeActions & WithTranslation<
     });
     return (<nav className="navbar navbar-expand-md navbar-light">
         <div ref={ref as React.MutableRefObject<HTMLDivElement>} className="container-fluid">
-            <Link onClick={() => setNavbarIsVisible(false)} to="/">{isIframe() ? `Z2M@${document.location.hostname}` : 'Zigbee2MQTT'}</Link>
+        <div className="logo">
+          <img src={logo} width="150" height="100" />
+        </div>
+            {/* <Link onClick={() => setNavbarIsVisible(false)} to="/">{isIframe() ? `Z2M@${document.location.hostname}` : 'Zigbee2MQTT'}</Link> */}
 
             <button onClick={() => { setNavbarIsVisible(!navbarIsVisible) }} className="navbar-toggler" type="button">
                 <span className="navbar-toggler-icon" />
@@ -131,11 +80,7 @@ const NavBar: FunctionComponent<PropsFromStore & ThemeActions & WithTranslation<
                     }
                     <LocalePicker />
                 </ul>
-                <StartStopJoinButton
-                    devices={devices}
-                    setPermitJoin={setPermitJoin}
-                    bridgeInfo={bridgeInfo}
-                />
+                
                 <ThemeSwitcher saveCurrentTheme={setTheme} />
 
             </div>
